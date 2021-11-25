@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">QuizApplication</string>
+
+    <!-- Questions-->
+    <string name="Question0">Is Yamoussoukro the capital of Cote d Ivoire?</string>
+    <string name="Question1">Is Cotonou the capital of Benin?</string>
+    <string name="Question2">Is Accra the capital of Ghana?</string>
+    <string name="Question3">Is Lagos the capital of Nigeria?</string>
+    <string name="Question4">Is Ouagadougou the capital of Burkina Faso?</string>
+    <string name="Question5">Is Gao the capital of Mali?</string>
+    <string name="Question6">Is Niamey the capital of Niger?</string>
+    <string name="Question7">Is Addis Ababa the capital of Ethiopia?</string>
+    <string name="Question8">Is Dar es Salam the capital of Tanzania?</string>
+    <string name="Question9">Is Freetown the capital of Liberia?</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Answers
+    true
+    false
+    true
+    false
+    true
+    false
+    true
+    true
+    false
+    false
+    -->
+
+</resources>
