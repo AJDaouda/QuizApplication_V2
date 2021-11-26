@@ -5,5 +5,5 @@ import android.app.Application;
 public class MyApp extends Application {
     private QuestionManager qManager =new QuestionManager();
 
-    public QuestionManager getqManager() {return qManager;}
+    public QuestionManager getManager() {return qManager;}
 }

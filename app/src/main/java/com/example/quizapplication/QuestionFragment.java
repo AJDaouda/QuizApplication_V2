@@ -35,7 +35,7 @@ public class QuestionFragment extends Fragment {
         TextView QText = (TextView)v.findViewById(R.id.qText_id);
 
         QText.setText(getArguments().getInt("QuestonId"));
-        QText.setBackgroundColor(getArguments().getInt("ColorId"));
+        QText.setBackgroundResource(getArguments().getInt("ColorId"));
         return v;
     }
 }
