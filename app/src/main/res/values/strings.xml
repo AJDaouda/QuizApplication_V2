@@ -1,8 +1,20 @@
 <resources>
     <string name="app_name">QuizApplication</string>
+    <!-- <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>-->
+
+
+    <!-- Menu Items-->
+    <string name="menu_item_1_text">Get the average</string>
+    <string name="menu_item_2_text">Select the number of questions</string>
+    <string name="menu_item_3_text">Reset the saved result</string>
+
+
+    <!-- Buttons-->
+    <string name="btnT_name">TRUE</string>
+    <string name="btnF_name">FALSE</string>
 
     <!-- Questions-->
-    <string name="Question0">Is Yamoussoukro the capital of Cote d Ivoire?</string>
+    <string name="Question0">Is Yamoussoukro the capital of Cote d\'Ivoire?</string>
     <string name="Question1">Is Cotonou the capital of Benin?</string>
     <string name="Question2">Is Accra the capital of Ghana?</string>
     <string name="Question3">Is Lagos the capital of Nigeria?</string>
@@ -12,8 +24,7 @@
     <string name="Question7">Is Addis Ababa the capital of Ethiopia?</string>
     <string name="Question8">Is Dar es Salam the capital of Tanzania?</string>
     <string name="Question9">Is Freetown the capital of Liberia?</string>
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
     <!-- Answers
     true

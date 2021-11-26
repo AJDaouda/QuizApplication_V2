@@ -29,9 +29,9 @@ public class QuestionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-         View v = inflater.inflate(R.layout.fragment_question, container, false);
+        // Inflating the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_question, container, false);
         TextView QText = (TextView)v.findViewById(R.id.qText_id);
 
         QText.setText(getArguments().getInt("QuestonId"));

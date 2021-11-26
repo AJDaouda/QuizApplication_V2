@@ -12,6 +12,7 @@ public class QuestionManager{
     private ArrayList<Question> questionBank = new ArrayList<>();
     private ArrayList<Integer> colors = new ArrayList();
 
+    public QuestionManager(){}
 
     Question q0 = new Question(R.string.Question0,false, getColors().get(0));
     Question q1 = new Question(R.string.Question1,false,getColors().get(1));
