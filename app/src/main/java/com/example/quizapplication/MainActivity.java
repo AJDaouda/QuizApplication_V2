@@ -24,17 +24,23 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    //
     FragmentManager fm = getSupportFragmentManager();
     AlertDialog.Builder builder;
 
+    //Layout Widgets declaration
     Button btn_true, btn_false;
     ProgressBar myProgress;
 
+    //External class objects declaration
     //QuestionManager qM = ((MyApp) getApplication()).getManager();
-   QuestionManager qM = new QuestionManager();
-    int index=1;
+    QuestionManager qM = new QuestionManager();
+
+    //Instance variables declaration
+    int numOfAttempts=0;
+    int index=0;
     int correctAnswers = 0;
-    boolean userAns;
+    String userAns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,72 +67,57 @@ public class MainActivity extends AppCompatActivity {
             //index++;
             }
         else{
+            updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             System.out.println("Something went wrong");
         }
     }
 
-
-        //index++;
 
     public void updateFragment(int qId, int colorId) {
         //FragmentManager fm = getSupportFragmentManager();
         fm.findFragmentById(R.id.main_frame_id);
         QuestionFragment qfragment = QuestionFragment.newInstance(qId, colorId);
         fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
-        //fm.beginTransaction().add(R.id.main_frame_id, qfragment).commit();
-       /* if (!(qfragment == null)){
+        /*if (!(qfragment == null)){
             // add it
             fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
             }
         else {
             // remove it
-            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); } */
+            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }*/
             }
 
 
-
-
-
-
-    // Required actions when "true" of "false" button is clicked
+// Required actions when "true" of "false" button is clicked
     public void btnClicked(View view) {
-        //if(index<=qM.getQuestionBank().size()){
-        int count= qM.getQuestionBank().size();
-        boolean done=false;
-        if(index == count){
-            done =true;
-            showAlertBox(); }
+        userAns=((Button) view).getText().toString().toLowerCase(Locale.ROOT);
+        if (index==(qM.getQuestionBank().size()-1)){
+            numOfAttempts++;
+            showAlertBox();
+            System.out.println("The correct answer is: "+numOfAttempts);}
         else{
-            done=false;
-             userAns = Boolean.valueOf((((Button) view).getText()).toString().toLowerCase(Locale.ROOT));
-            System.out.println("The user input is: "+userAns);
-            //if (userAns == Boolean.valueOf(qM.getQuestionBank().get(index).isAnswer())){
-            if (userAns == Boolean.valueOf(qM.getQuestionBank().get(index).isAnswer())){
-                correctAnswers++;
-                //System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+            if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
+                System.out.println("The user's answer is: "+ userAns);
                 System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
-                Toast.makeText(this,"Your answer is correct",Toast.LENGTH_SHORT).show();}
-            else{Toast.makeText(this,"Your answer is incorrect",Toast.LENGTH_SHORT).show();
-                index++;
-                //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
-                updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
-                myProgress.setProgress(index);
-
-            }
-
+                Toast.makeText(this,"Incorrect",Toast.LENGTH_SHORT).show();}
+            else{
+                System.out.println("The user's answer is: "+ userAns);
+                System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+                Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show();
+                correctAnswers++;
+                 }
+            //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
+            index++;
+            updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
+            myProgress.setProgress(index);
         }
-            /*else {showAlertBox();}*/
-
-        //for(int i= index; i<qM.getQuestionBank().size()-1;i++){}
-        //index++;
     }
-
 
 
     //Shows a dialog box whe the shopper purchases an item
     private void showAlertBox(){
         builder.setTitle("Result");
-        builder.setMessage("Your score is:" + correctAnswers + " over"+ qM.getQuestionBank().size());
+        builder.setMessage("Your score is: " + correctAnswers + " over"+ qM.getQuestionBank().size());
         builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -177,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt("current", index);
     }
+}
 
     /*@Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
@@ -189,4 +181,36 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putInt("current", index); }*/
-}
+
+/*
+// Required actions when "true" of "false" button is clicked
+    public void btnClicked(View view) {
+        //if(index<=qM.getQuestionBank().size()){
+        int count= qM.getQuestionBank().size();
+        boolean done=false;
+        if(index == count){
+            done =true;
+            showAlertBox(); }
+        else{
+            done=false;
+             userAns = Boolean.valueOf((((Button) view).getText()).toString().toLowerCase(Locale.ROOT));
+            System.out.println("The user input is: "+userAns);
+            //if (userAns == Boolean.valueOf(qM.getQuestionBank().get(index).isAnswer())){
+            if (userAns == Boolean.valueOf(qM.getQuestionBank().get(index).isAnswer())){
+                correctAnswers++;
+                //System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+                System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+                Toast.makeText(this,"Your answer is correct",Toast.LENGTH_SHORT).show();}
+            else{Toast.makeText(this,"Your answer is incorrect",Toast.LENGTH_SHORT).show();
+                index++;
+                //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
+                updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
+                myProgress.setProgress(index);
+
+            }
+
+        }
+            /*else {showAlertBox();}*/
+
+//for(int i= index; i<qM.getQuestionBank().size()-1;i++){}
+//index++;
