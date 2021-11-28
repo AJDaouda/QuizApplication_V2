@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.os.storage.StorageManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.quizapplication.Model.MyApp;
 import com.example.quizapplication.Model.Question;
 import com.example.quizapplication.Model.QuestionManager;
+import com.example.quizapplication.Model.StorageService;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     //External class objects declaration
     //QuestionManager qM = ((MyApp) getApplication()).getManager();
     QuestionManager qM = new QuestionManager();
+    StorageService storageM;
+    Question answeredQuest;
 
     //Instance variables declaration
     int numOfAttempts=0;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        storageM = ((MyApp) getApplication()).getStorageManager();
 
         btn_true = (Button) findViewById(R.id.btn_T);
         btn_false = (Button) findViewById(R.id.btn_F);
@@ -106,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show();
                 correctAnswers++;
                  }
-            //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
+            answeredQuest = new Question(getResources().getString(qM.getQuestionBank().get(index).getQuestionId())
+                    , Boolean.valueOf(userAns));
             index++;
+            //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             myProgress.setProgress(index);
         }
@@ -122,7 +129,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"SAVE clicked",Toast.LENGTH_SHORT).show();
-                //Call saveData from the StorageSevice class
+                //Call saveData from the StorageService class
+                storageM.saveResult(MainActivity.this,answeredQuest);
+                System.out.println(answeredQuest.toString());
                 qM.shuffle();
             }
         });

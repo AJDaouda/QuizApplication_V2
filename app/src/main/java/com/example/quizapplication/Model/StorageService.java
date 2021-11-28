@@ -7,10 +7,11 @@ import com.example.quizapplication.MainActivity;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class StorageService {
 
-    String fileName = "myDB.txt";
+    String fileName = "userAnswer.txt";
     //int total;
     //int correctAnswer;
 
@@ -19,12 +20,23 @@ public class StorageService {
         fileOutputStream = Open;
     }*/
 
-    public void saveScore(Activity context, int correctAnswer){
-        FileOutputStream fileOutputStream = null;
+    //File outputstream for writing to "userAnswer.txt"
+    public void saveResult(Activity context, Question userAnsweredQuestion){
+        FileOutputStream fos = null;
         try {
-            fileOutputStream = context.openFileOutput(fileName, Context.MODE_APPEND);
+            fos = context.openFileOutput(fileName, Context.MODE_APPEND);
+            fos.write((userAnsweredQuestion.toString() +"$").getBytes());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
