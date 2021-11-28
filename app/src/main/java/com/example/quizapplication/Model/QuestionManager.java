@@ -70,6 +70,10 @@ public class QuestionManager{
     public void setQuestionBank(ArrayList<Question> questionBank) {this.questionBank = questionBank;}
     public void setColors(ArrayList<Integer> colors) {this.colors = colors; }
 
+    @Override
+    public String toString() {
+        return "questionBank: " + questionBank;
+    }
 }
 
  /*Answers

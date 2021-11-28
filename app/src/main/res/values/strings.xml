@@ -10,8 +10,8 @@
 
 
     <!-- Buttons-->
-    <string name="btnT_name">TRUE</string>
-    <string name="btnF_name">FALSE</string>
+    <string name="btnT_name" translatable="false">TRUE</string>
+    <string name="btnF_name" translatable="false">FALSE</string>
 
     <!-- Questions-->
     <string name="Question0">Is Yamoussoukro the capital city of Cote d\'Ivoire?</string>

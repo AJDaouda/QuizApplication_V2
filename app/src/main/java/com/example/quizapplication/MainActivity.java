@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //public ArrayList<Question> listOfAnsweredQ = new ArrayList<>();
     int numOfAttempts=0;
     int index=0;
-    int correctAnswers;
+    int correctAnswers=0;
     String userAns;
     int progressMaxValue=qM.getQuestionBank().size();
 
@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         else{
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
-            System.out.println("Something went wrong");
-        }
+            System.out.println("Something went wrong"); }
     }
 
 
@@ -93,44 +92,41 @@ public class MainActivity extends AppCompatActivity {
             }
         else {
             // remove it
-            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }*/
-            }
-
+            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }*/}
 
 // Required actions when "true" of "false" button is clicked
     public void btnClicked(View view) {
         userAns=((Button) view).getText().toString().toLowerCase(Locale.ROOT);
         if (index==qM.getQuestionBank().size()-1){
-            numOfAttempts++;
+            getAnswer();
             myProgress.setProgress(progressMaxValue);
-            showAlertBox();
-            System.out.println("The number of attempts is: "+numOfAttempts);}
+            showAlertBox(); }
         else{
-            if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
-                System.out.println("The user's answer is: "+ userAns);
-                System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
-                //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
-                //listOfAnsweredQ.add(answeredQuest);
-                Toast.makeText(this,"Incorrect",Toast.LENGTH_SHORT).show();}
-            else{
-                //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
-                //listOfAnsweredQ.add(answeredQuest);
-                correctAnswers++;
-                System.out.println("The user's answer is: "+ userAns);
-                System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
-                Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show(); }
-
+            getAnswer();
             answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), userAns);
             storageM.saveResult(MainActivity.this,answeredQuest);
             index++;
             //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
-            myProgress.setProgress(index);
-        }
-    }
+            myProgress.setProgress(index); } }
 
 
-    //Shows a dialog box whe the shopper purchases an item
+    private void getAnswer(){
+        if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
+            System.out.println("The user's answer is: "+ userAns);
+            System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+            //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+            //listOfAnsweredQ.add(answeredQuest);
+            Toast.makeText(this,"Incorrect",Toast.LENGTH_SHORT).show();}
+        else{
+            //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+            //listOfAnsweredQ.add(answeredQuest);
+            correctAnswers++;
+            System.out.println("The user's answer is: "+ userAns);
+            System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+            Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show(); }}
+
+    //Dialog box when the user clicks on "SAVE" or "IGNORE"
     private void showAlertBox(){
         builder.setTitle("Result");
         builder.setMessage("Your score is: " + correctAnswers + " over "+ qM.getQuestionBank().size());
@@ -141,7 +137,14 @@ public class MainActivity extends AppCompatActivity {
                 //Call saveData from the StorageService class
                 //storageM.saveResult(MainActivity.this,answeredQuest);
                 System.out.println(answeredQuest.toString());
+                numOfAttempts++;
+                index =0;
+                correctAnswers=0;
                 qM.shuffle();
+                myProgress.setProgress(index);
+                updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
+                System.out.println("The number of attempts is: "+numOfAttempts);
+                System.out.println(qM.getQuestionBank().toString());
             }
         });
 
@@ -149,9 +152,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"IGNORE clicked",Toast.LENGTH_SHORT).show();
+                index =0;
+                correctAnswers=0;
                 qM.shuffle();
+                myProgress.setProgress(index);
+                System.out.println(qM.getQuestionBank().toString());
+                updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             }
         });
+        AlertDialog alertDialog=builder.create();
+        builder.show(); }
+
+    //Dialog box when the user clicks on "Getting the average"
+    private void getAverage(){
+        builder.setMessage("Your correct answers are " + correctAnswers + " in "+ numOfAttempts + "attempts");
+        builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"SAVE clicked",Toast.LENGTH_SHORT).show();}});
+
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"OK clicked",Toast.LENGTH_SHORT).show();}});
         AlertDialog alertDialog=builder.create();
         builder.show(); }
 
@@ -168,7 +191,9 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         switch (item.getItemId()){
             case R.id.menu_item_1:
-                Toast.makeText(this,"Getting the average",Toast.LENGTH_SHORT).show();
+                getAverage();
+                //Toast.makeText(this,"Getting the average",Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.menu_item_2:
                 Toast.makeText(this,"Selecting then number of questions",Toast.LENGTH_SHORT).show();

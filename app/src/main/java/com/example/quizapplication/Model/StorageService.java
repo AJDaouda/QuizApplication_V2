@@ -37,11 +37,11 @@ public class StorageService {
             catch (IOException e) {
                 e.printStackTrace(); } } }
 
-    public void getResults(Activity context){
+    public void loadResults(Activity context){
         FileInputStream fis =null;
         StringBuffer sB = new StringBuffer();
         int read=0;
-
+//Finish this method
         try {
             fis = context.openFileInput(fileName);
         while((read= fis.read())!=-1){

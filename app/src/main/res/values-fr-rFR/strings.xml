@@ -10,8 +10,6 @@
     <string name="Question7">Addis-Abeba est-elle la capitale de l\'Éthiopie ?</string>
     <string name="Question8">Dar es Salam est-elle la capitale de la Tanzanie ?</string>
     <string name="Question9">Freetown est-elle la capitale du Libéria ?</string>
-    <string name="btnT_name">VRAI</string>
-    <string name="btnF_name">FAUX</string>
     <string name="menu_item_1_text">Votre moyenne</string>
     <string name="menu_item_2_text">Choisir le nombre de questions</string>
     <string name="menu_item_3_text">Réinitialiser</string>
