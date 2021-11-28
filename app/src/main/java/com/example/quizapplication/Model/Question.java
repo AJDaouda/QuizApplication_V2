@@ -27,6 +27,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question: " + questionId +
+        return "Question: " + question +
                 ", answer: " + answer;}
 }

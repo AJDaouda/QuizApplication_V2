@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Question answeredQuest;
 
     //Instance variables declaration
+    //public ArrayList<Question> listOfAnsweredQ = new ArrayList<>();
     int numOfAttempts=0;
     int index=0;
     int correctAnswers = 0;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             System.out.println("my list is: " + qM.getQuestionBank().toString());
-            //index++;
             }
         else{
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
@@ -82,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
         //FragmentManager fm = getSupportFragmentManager();
         fm.findFragmentById(R.id.main_frame_id);
         QuestionFragment qfragment = QuestionFragment.newInstance(qId, colorId);
-        fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
-        /*if (!(qfragment == null)){
+        //fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
+        if (!(qfragment == null)){
             // add it
             fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
             }
         else {
             // remove it
-            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }*/
+            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }
             }
 
 
@@ -104,15 +104,19 @@ public class MainActivity extends AppCompatActivity {
             if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
                 System.out.println("The user's answer is: "+ userAns);
                 System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+                //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+                //listOfAnsweredQ.add(answeredQuest);
                 Toast.makeText(this,"Incorrect",Toast.LENGTH_SHORT).show();}
             else{
+                //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+                //listOfAnsweredQ.add(answeredQuest);
                 System.out.println("The user's answer is: "+ userAns);
                 System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
                 Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show();
                 correctAnswers++;
                  }
-            answeredQuest = new Question(getResources().getString(qM.getQuestionBank().get(index).getQuestionId())
-                    , Boolean.valueOf(userAns));
+            answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+            storageM.saveResult(MainActivity.this,answeredQuest);
             index++;
             //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"SAVE clicked",Toast.LENGTH_SHORT).show();
                 //Call saveData from the StorageService class
-                storageM.saveResult(MainActivity.this,answeredQuest);
+                //storageM.saveResult(MainActivity.this,answeredQuest);
                 System.out.println(answeredQuest.toString());
                 qM.shuffle();
             }
