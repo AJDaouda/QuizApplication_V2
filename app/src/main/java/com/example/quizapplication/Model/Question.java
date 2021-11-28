@@ -4,6 +4,7 @@ public class Question {
     private int questionId;
     private String question;
     private boolean answer;
+    private String userAnswer;
     private int colorId;
 
     public Question(int questionId, boolean answer, int colorId) {
@@ -11,9 +12,9 @@ public class Question {
         this.answer = answer;
         this.colorId = colorId;}
 
-    public Question(String question, boolean answer) {
+    public Question(String question, String answer) {
         this.question = question;
-        this.answer = answer;}
+        this.userAnswer = answer;}
 
     //Getters
     public int getQuestionId() {return questionId; }
@@ -27,6 +28,17 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question: " + question +
-                ", answer: " + answer;}
+        return question + "," + userAnswer;}
+
+    public static Question fromString(String stringQuestion){
+        Question newQ = new Question("","");
+        for (int i = 0; i<stringQuestion.toCharArray().length; i++){
+            if (stringQuestion.toCharArray()[i] == ','){
+                String question = stringQuestion.substring(0, i - 1  );
+                String answer = stringQuestion.substring(i + 1,stringQuestion.toCharArray().length );
+                newQ = new Question(question,answer);
+            }
+        }
+        return newQ;
+    }
 }

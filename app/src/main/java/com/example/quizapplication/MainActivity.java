@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     //External class objects declaration
     //QuestionManager qM = ((MyApp) getApplication()).getManager();
-    QuestionManager qM = new QuestionManager();
+    //QuestionManager qM;
+    QuestionManager qM=new QuestionManager();
     StorageService storageM;
     Question answeredQuest;
 
@@ -44,20 +45,23 @@ public class MainActivity extends AppCompatActivity {
     //public ArrayList<Question> listOfAnsweredQ = new ArrayList<>();
     int numOfAttempts=0;
     int index=0;
-    int correctAnswers = 0;
+    int correctAnswers;
     String userAns;
+    int progressMaxValue=qM.getQuestionBank().size();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //qM = ((MyApp) getApplication()).getQManager();
         storageM = ((MyApp) getApplication()).getStorageManager();
 
         btn_true = (Button) findViewById(R.id.btn_T);
         btn_false = (Button) findViewById(R.id.btn_F);
         myProgress =  (ProgressBar) findViewById(R.id.pbar);
-        myProgress.setMax(qM.getQuestionBank().size());
-        //int maxValue=myProgress.getMax();
+        myProgress.setMax(progressMaxValue);
+
         //int progressValue=myProgress.getProgress();
 
         builder = new AlertDialog.Builder(this);
@@ -82,24 +86,25 @@ public class MainActivity extends AppCompatActivity {
         //FragmentManager fm = getSupportFragmentManager();
         fm.findFragmentById(R.id.main_frame_id);
         QuestionFragment qfragment = QuestionFragment.newInstance(qId, colorId);
-        //fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
-        if (!(qfragment == null)){
+        fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
+        /*if (!(qfragment == null)){
             // add it
             fm.beginTransaction().replace(R.id.main_frame_id,qfragment).commit();
             }
         else {
             // remove it
-            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }
+            fm.beginTransaction().add(R.id.main_frame_id,qfragment).commit(); }*/
             }
 
 
 // Required actions when "true" of "false" button is clicked
     public void btnClicked(View view) {
         userAns=((Button) view).getText().toString().toLowerCase(Locale.ROOT);
-        if (index==(qM.getQuestionBank().size()-1)){
+        if (index==qM.getQuestionBank().size()-1){
             numOfAttempts++;
+            myProgress.setProgress(progressMaxValue);
             showAlertBox();
-            System.out.println("The correct answer is: "+numOfAttempts);}
+            System.out.println("The number of attempts is: "+numOfAttempts);}
         else{
             if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
                 System.out.println("The user's answer is: "+ userAns);
@@ -110,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
             else{
                 //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
                 //listOfAnsweredQ.add(answeredQuest);
+                correctAnswers++;
                 System.out.println("The user's answer is: "+ userAns);
                 System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
-                Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show();
-                correctAnswers++;
-                 }
-            answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
+                Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show(); }
+
+            answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), userAns);
             storageM.saveResult(MainActivity.this,answeredQuest);
             index++;
             //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
@@ -128,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     //Shows a dialog box whe the shopper purchases an item
     private void showAlertBox(){
         builder.setTitle("Result");
-        builder.setMessage("Your score is: " + correctAnswers + " over"+ qM.getQuestionBank().size());
+        builder.setMessage("Your score is: " + correctAnswers + " over "+ qM.getQuestionBank().size());
         builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -169,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Selecting then number of questions",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_item_3:
+                storageM.resetAllResults(MainActivity.this);
                 Toast.makeText(this,"Resetting the result",Toast.LENGTH_SHORT).show();
                 break;
         }
