@@ -23,6 +23,7 @@ import com.example.quizapplication.Model.QuestionManager;
 import com.example.quizapplication.Model.StorageService;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     int index=0;
     int correctAnswers=0;
     String userAns;
+    int  intValueOfuserAns;
     int progressMaxValue=qM.getQuestionBank().size();
 
     @Override
@@ -96,23 +98,30 @@ public class MainActivity extends AppCompatActivity {
 
 // Required actions when "true" of "false" button is clicked
     public void btnClicked(View view) {
-        userAns=((Button) view).getText().toString().toLowerCase(Locale.ROOT);
+        userAns = ((Button) view).getText().toString();
+       // if (((Button) view).getText()==getResources().getString(R.string.btnT_name)){}
+
         if (index==qM.getQuestionBank().size()-1){
             getAnswer();
             myProgress.setProgress(progressMaxValue);
             showAlertBox(); }
         else{
             getAnswer();
-            answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), userAns);
-            storageM.saveResult(MainActivity.this,answeredQuest);
+            //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), userAns);
+            //storageM.saveResult(MainActivity.this,answeredQuest);
             index++;
             //updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());}
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             myProgress.setProgress(index); } }
 
+    private void getUseChoice(){
+             if(userAns==getResources().getString(R.string.btnT_name)){
+        intValueOfuserAns = R.string.True_answer; }
+        else {intValueOfuserAns = R.string.False_answer;}}
 
     private void getAnswer(){
-        if (Boolean.valueOf(userAns) != qM.getQuestionBank().get(index).isAnswer()){
+            getUseChoice();
+        if (intValueOfuserAns != qM.getQuestionBank().get(index).isAnswer()){
             System.out.println("The user's answer is: "+ userAns);
             System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
             //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
@@ -128,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Dialog box when the user clicks on "SAVE" or "IGNORE"
     private void showAlertBox(){
-        builder.setTitle("Result");
+        builder.setTitle(getResources().getString(R.string.Result_text));
         builder.setMessage("Your score is: " + correctAnswers + " over "+ qM.getQuestionBank().size());
-        builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.btn_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"SAVE clicked",Toast.LENGTH_SHORT).show();
@@ -148,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("IGNORE", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.btn_ignore), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"IGNORE clicked",Toast.LENGTH_SHORT).show();

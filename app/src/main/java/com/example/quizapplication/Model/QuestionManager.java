@@ -30,16 +30,16 @@ public class QuestionManager{
         this.colors.add(R.color.YellowGreen);
         this.colors.add(R.color.Thistle);
 
-        Question q1 = new Question(R.string.Question1,false,colors.get(1));
-        Question q2 = new Question(R.string.Question2,true,colors.get(2));
-        Question q3 = new Question(R.string.Question3,false,colors.get(3));
-        Question q4 = new Question(R.string.Question4,true,colors.get(4));
-        Question q5 = new Question(R.string.Question5,false,colors.get(5));
-        Question q6 = new Question(R.string.Question6,true,colors.get(6));
-        Question q7 = new Question(R.string.Question7,true,colors.get(7));
-        Question q8 = new Question(R.string.Question8,false,colors.get(8));
-        Question q9 = new Question(R.string.Question9,false,colors.get(9));
-        Question q10 = new Question(R.string.Question0,true, colors.get(0));
+        Question q1 = new Question(R.string.Question1,R.string.False_answer,colors.get(1));
+        Question q2 = new Question(R.string.Question2,R.string.True_answer,colors.get(2));
+        Question q3 = new Question(R.string.Question3,R.string.False_answer,colors.get(3));
+        Question q4 = new Question(R.string.Question4,R.string.True_answer,colors.get(4));
+        Question q5 = new Question(R.string.Question5,R.string.False_answer,colors.get(5));
+        Question q6 = new Question(R.string.Question6,R.string.True_answer,colors.get(6));
+        Question q7 = new Question(R.string.Question7,R.string.True_answer,colors.get(7));
+        Question q8 = new Question(R.string.Question8,R.string.False_answer,colors.get(8));
+        Question q9 = new Question(R.string.Question9,R.string.False_answer,colors.get(9));
+        Question q10 = new Question(R.string.Question0,R.string.True_answer, colors.get(0));
 
         this.questionBank.add(q1);
         this.questionBank.add(q2);

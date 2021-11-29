@@ -13,4 +13,12 @@
     <string name="menu_item_1_text">Votre moyenne</string>
     <string name="menu_item_2_text">Choisir le nombre de questions</string>
     <string name="menu_item_3_text">Réinitialiser</string>
+    <string name="btnF_name">FAUX</string>
+    <string name="True_answer">vrai</string>
+    <string name="False_answer">faux</string>
+    <string name="btnT_name">VRAI</string>
+    <string name="btn_ignore">IGNORER</string>
+    <string name="btn_save">ENREGISTRER</string>
+    <string name="Result_text">Résultat</string>
+
 </resources>
