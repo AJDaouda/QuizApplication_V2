@@ -2,19 +2,20 @@ package com.example.quizapplication.Model;
 
 public class Question {
     private int questionId;
-    private String question;
+    //private String question;
     private int answer;
-    private String userAnswer;
+    //private boolean userAnswer;
     private int colorId;
+
 
     public Question(int questionId, int answer, int colorId) {
         this.questionId = questionId;
         this.answer = answer;
         this.colorId = colorId;}
 
-    public Question(String question, String answer) {
+    /*public Question(String question, boolean answer) {
         this.question = question;
-        this.userAnswer = answer;}
+        this.userAnswer = answer;}*/
 
     //Getters
     public int getQuestionId() {return questionId; }
@@ -26,11 +27,14 @@ public class Question {
     public void setAnswer(int answer) {this.answer = answer;}
     public void setColorId(int colorId) {this.colorId = colorId;}
 
-    @Override
-    public String toString() {
-        return question + "," + userAnswer;}
 
-    public static Question fromString(String stringQuestion){
+
+
+    /*@Override
+    public String toString() {
+        return question + "," + userAnswer;}*/
+
+   /* public static Question fromString(String stringQuestion){
         Question newQ = new Question("","");
         for (int i = 0; i<stringQuestion.toCharArray().length; i++){
             if (stringQuestion.toCharArray()[i] == ','){
@@ -40,5 +44,5 @@ public class Question {
             }
         }
         return newQ;
-    }
+    }*/
 }

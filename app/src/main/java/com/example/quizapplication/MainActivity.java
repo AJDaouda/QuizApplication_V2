@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.quizapplication.Model.Attempt;
 import com.example.quizapplication.Model.MyApp;
 import com.example.quizapplication.Model.Question;
 import com.example.quizapplication.Model.QuestionManager;
@@ -40,15 +41,17 @@ public class MainActivity extends AppCompatActivity {
     //QuestionManager qM;
     QuestionManager qM=new QuestionManager();
     StorageService storageM;
-    Question answeredQuest;
+    Attempt answeredQuestion;
 
     //Instance variables declaration
     //public ArrayList<Question> listOfAnsweredQ = new ArrayList<>();
+    public ArrayList<Attempt> allAttempts;
     int numOfAttempts=0;
     int index=0;
     int correctAnswers=0;
     String userAns;
     int  intValueOfuserAns;
+    int currentAttemptAnswer=0;
     int progressMaxValue=qM.getQuestionBank().size();
 
     @Override
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         //qM = ((MyApp) getApplication()).getQManager();
         storageM = ((MyApp) getApplication()).getStorageManager();
+        allAttempts = storageM.getAllAttempts(MainActivity.this);
+        System.out.println("All attempts are: "+allAttempts);
 
         btn_true = (Button) findViewById(R.id.btn_T);
         btn_false = (Button) findViewById(R.id.btn_F);
@@ -75,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
             //System.out.println("my list is: " + qM.getQuestionBank().toString());
 
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
-            System.out.println("my list is: " + qM.getQuestionBank().toString());
+            //System.out.println("my list is: " + qM.getQuestionBank().toString());
             }
         else{
             updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
-            System.out.println("Something went wrong"); }
+            //System.out.println("Something went wrong");
+            }
     }
 
 
@@ -123,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             getUseChoice();
         if (intValueOfuserAns != qM.getQuestionBank().get(index).isAnswer()){
             System.out.println("The user's answer is: "+ userAns);
-            System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+            System.out.println("The correct answer is: "+ getResources().getString(qM.getQuestionBank().get(index).isAnswer()));
             //answeredQuest = new Question( this.getString(qM.getQuestionBank().get(index).getQuestionId()), Boolean.valueOf(userAns));
             //listOfAnsweredQ.add(answeredQuest);
             Toast.makeText(this,"Incorrect",Toast.LENGTH_SHORT).show();}
@@ -132,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             //listOfAnsweredQ.add(answeredQuest);
             correctAnswers++;
             System.out.println("The user's answer is: "+ userAns);
-            System.out.println("The correct answer is: "+ qM.getQuestionBank().get(index).isAnswer());
+            System.out.println("The correct answer is: "+ getResources().getString(qM.getQuestionBank().get(index).isAnswer()));
             Toast.makeText(this,"Correct",Toast.LENGTH_SHORT).show(); }}
 
     //Dialog box when the user clicks on "SAVE" or "IGNORE"
@@ -144,16 +150,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(),"SAVE clicked",Toast.LENGTH_SHORT).show();
                 //Call saveData from the StorageService class
-                //storageM.saveResult(MainActivity.this,answeredQuest);
-                System.out.println(answeredQuest.toString());
+                answeredQuestion = new Attempt(String.valueOf(correctAnswers));
+                storageM.saveResult(MainActivity.this,answeredQuestion);
+
+                //System.out.println(answeredQuest.toString());
                 numOfAttempts++;
+
                 index =0;
                 correctAnswers=0;
                 qM.shuffle();
                 myProgress.setProgress(index);
                 updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
                 System.out.println("The number of attempts is: "+numOfAttempts);
-                System.out.println(qM.getQuestionBank().toString());
+                //System.out.println(getResources().getString(qM.getQuestionBank().toString()));
             }
         });
 
@@ -165,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 correctAnswers=0;
                 qM.shuffle();
                 myProgress.setProgress(index);
-                System.out.println(qM.getQuestionBank().toString());
+                //System.out.println(qM.getQuestionBank().toString());
                 updateFragment(qM.getQuestionBank().get(index).getQuestionId(),qM.getQuestionBank().get(index).getColorId());
             }
         });
@@ -173,8 +182,16 @@ public class MainActivity extends AppCompatActivity {
         builder.show(); }
 
     //Dialog box when the user clicks on "Getting the average"
+    public int getAverageFromAllAttempts(ArrayList allAttempts){
+        for(int i=0;i<allAttempts.size();i++){
+            currentAttemptAnswer = Integer.parseInt(String.valueOf(allAttempts.get(i)));
+            currentAttemptAnswer+=currentAttemptAnswer;
+        }
+        return currentAttemptAnswer;
+    }
     private void getAverage(){
-        builder.setMessage("Your correct answers are " + correctAnswers + " in "+ numOfAttempts + "attempts");
+        System.out.println("the toal number of answered q is: "+ getAverageFromAllAttempts(allAttempts) );
+        builder.setMessage("Your correct answers are " + getAverageFromAllAttempts(allAttempts) + " in "+ numOfAttempts + " attempts");
         builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -209,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.menu_item_3:
                 storageM.resetAllResults(MainActivity.this);
+                numOfAttempts=0;
                 Toast.makeText(this,"Resetting the result",Toast.LENGTH_SHORT).show();
                 break;
         }
